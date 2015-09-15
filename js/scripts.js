@@ -22,6 +22,7 @@ $(document).ready(function() {
 
   function renderOptionsMenu(account) {
     $("#form-container").empty();
+    $("#sub-header").text("");
     $("#form-container").append(
       "<div id='options-menu' class='row text-center'>" +  
         "<h2>Welcome <b>" + account.name + "</b>!</h2>" +
@@ -34,15 +35,9 @@ $(document).ready(function() {
       "</div>" 
     )
     renderBackButton();
-    $("#checkBalance").click(function() {
-      renderBalance(account);
-    });
-    $("#depositForm").click(function() {
-      renderDepositForm(account);
-    });
-    $("#withdrawalForm").click(function() {
-      renderWithdrawalForm(account);
-    });
+    $("#checkBalance").click(function() { renderBalance(account); });
+    $("#depositForm").click(function() { renderDepositForm(account); });
+    $("#withdrawalForm").click(function() { renderWithdrawalForm(account); });
   };
 
   function renderBalance() {
@@ -53,14 +48,23 @@ $(document).ready(function() {
         "<h3>Balance: $" + account.balance + "</h3>" +
       "</div>"
     )
+    renderBackButton();
   };
 
+  function createEventListener() {
+    $(document).find("#back").click(function() {
+      renderOptionsMenu(account);
+    });
+  }
+
+  // Need to add functionality
   function renderBackButton() {
     $("#form-container").append(
       "<div class='row text-center'>" + 
         "<button id='back' class='btn btn-info'>Back</button>" +
       "</div>"
     )
+    createEventListener();
   }
 
   function renderWithdrawalForm() {
@@ -76,12 +80,14 @@ $(document).ready(function() {
         "</div>" +
       "</form>"
     )
+    renderBackButton();
     $("#withdrawal-form").submit(function(e) {
       e.preventDefault();
       var withdrawAmt = parseInt( $("#withdrawal-amount").val() );
       account.withdraw(withdrawAmt);
       renderBalance();
     });
+
   };
 
   function renderDepositForm(account) {
@@ -97,6 +103,7 @@ $(document).ready(function() {
         "</div>" +
       "</form>"
     )
+    renderBackButton();
     $("#deposit-form").submit(function(e) {
       e.preventDefault();
       var depositAmt = parseInt( $("#deposit-amount").val() ); 
@@ -105,7 +112,8 @@ $(document).ready(function() {
     });
   };
 
-  function renderAccountHistoryForm() {
-    $("#form-container").empty();
-  };
+  // Extra features 
+  // function renderAccountHistoryForm() {
+  //   $("#form-container").empty();
+  // };
 });
