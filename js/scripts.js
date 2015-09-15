@@ -9,7 +9,7 @@ Account.prototype.withdraw = function (amount) {
 
 Account.prototype.deposit = function (amount) {
   return this.balance += amount;
-}
+};
 
 $(document).ready(function() {
   $("#create-account-form").submit(function(e) {
@@ -55,9 +55,8 @@ $(document).ready(function() {
     $(document).find("#back").click(function() {
       renderOptionsMenu(account);
     });
-  }
+  };
 
-  // Need to add functionality
   function renderBackButton() {
     $("#form-container").append(
       "<hr>" +
@@ -66,7 +65,7 @@ $(document).ready(function() {
       "</div>"
     )
     createEventListener();
-  }
+  };
 
   function renderWithdrawalForm() {
     $("#form-container").empty();
