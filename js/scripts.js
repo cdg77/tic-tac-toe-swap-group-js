@@ -30,7 +30,7 @@ $(document).ready(function() {
       "<div id='options-menu' class='row text-center'>" +
         "<h2>Welcome <b>" + account.name + "</b>!</h2>" +
         "<h2><small>I would like to...</small></h2>" +
-        "<div class='row text-center'>" +
+        "<div class='text-center'>" +
           "<button class='btn btn-lg btn-default' id='checkBalance'>Check Balance</button>" +
           "<button class='btn btn-lg btn-success' id='depositForm'>Make a Deposit</button>" +
           "<button class='btn btn-lg btn-danger' id='withdrawalForm'>Make a Withdrawal</button>" +
@@ -119,10 +119,10 @@ $(document).ready(function() {
   function renderAccountHistoryForm(account) {
     $("#form-container").empty();
     $("#form-container").append(
-      "<ul id='transactions-container'></ul>"
+      "<ul class='well' id='transactions-container'></ul>"
     )
     account.transactions.forEach(function(transaction) {
-      $("#form-container").append("<li>" + transaction + "</li>");
+      $("#transactions-container").append("<li class='transaction-list-item'>" + transaction + "</li>");
     });
     renderBackButton();
   };
