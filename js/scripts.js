@@ -116,7 +116,7 @@ $(document).ready(function() {
     });
   };
 
-  function renderAccountHistoryForm(acount) {
+  function renderAccountHistoryForm(account) {
     $("#form-container").empty();
     $("#form-container").append(
       "<ul id='transactions-container'></ul>"
