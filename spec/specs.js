@@ -21,7 +21,6 @@ describe("Account", function() {
     var testAccount = new Account("Nomen", 200);
     testAccount.deposit(100);
     testAccount.withdraw(50);
-    expect(testAccount.transactions).to.equal("Deposit - 100, Withdrawal - 50 ");
+    expect(testAccount.transactions).to.eql(["Deposited - 100", "Withdrew - 50"]);
   });
 });
-
