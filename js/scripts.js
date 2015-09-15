@@ -60,8 +60,9 @@ $(document).ready(function() {
   // Need to add functionality
   function renderBackButton() {
     $("#form-container").append(
+      "<hr>" +
       "<div class='row text-center'>" + 
-        "<button id='back' class='btn btn-info'>Back</button>" +
+        "<button id='back' class='btn btn-primary btn-lg'>Back</button>" +
       "</div>"
     )
     createEventListener();
@@ -87,7 +88,6 @@ $(document).ready(function() {
       account.withdraw(withdrawAmt);
       renderBalance();
     });
-
   };
 
   function renderDepositForm(account) {

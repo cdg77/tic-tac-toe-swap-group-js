@@ -16,5 +16,12 @@ describe("Account", function() {
     testAccount.deposit(100);
     expect(testAccount.balance).to.equal(300);
   });
+
+  it("adds a method to display previous transactions", function() {
+    var testAccount = new Account("Nomen", 200);
+    testAccount.deposit(100);
+    testAccount.withdraw(50);
+    expect(testAccount.transactions).to.equal("Deposit - 100, Withdrawal - 50 ");
+  });
 });
 
