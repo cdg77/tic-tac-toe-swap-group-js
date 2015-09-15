@@ -29,7 +29,7 @@ $(document).ready(function() {
         "<div class='row text-center'>" +
           "<button class='btn btn-lg btn-default' id='checkBalance'>Check Balance</button>" + 
           "<button class='btn btn-lg btn-success' id='depositForm'>Make a Deposit</button>" +
-          "<button class='btn btn-lg btn-danger' id='withdrawForm'>Make a Withdrawal</button>" +
+          "<button class='btn btn-lg btn-danger' id='withdrawalForm'>Make a Withdrawal</button>" +
         "</div>" + 
       "</div>" 
     )
@@ -39,6 +39,9 @@ $(document).ready(function() {
     });
     $("#depositForm").click(function() {
       renderDepositForm(account);
+    });
+    $("#withdrawalForm").click(function() {
+      renderWithdrawalForm(account);
     });
   };
 
@@ -62,8 +65,23 @@ $(document).ready(function() {
 
   function renderWithdrawalForm() {
     $("#form-container").empty();
-
-
+    $("#form-container").append(
+      "<form id='withdrawal-form' class='well'>" + 
+        "<div class='form-group'>" +
+          "<label for='withdrawal-amount'>Amt to withdraw</label>" +
+          "<input type='text' class='form-control' id='withdrawal-amount'>" + 
+        "</div>" +
+        "<div class='row text-center'>" +
+          "<button type='submit' class='btn btn-primary btn-lg'>Withdrawal</button>" +
+        "</div>" +
+      "</form>"
+    )
+    $("#withdrawal-form").submit(function(e) {
+      e.preventDefault();
+      var withdrawAmt = parseInt( $("#withdrawal-amount").val() );
+      account.withdraw(withdrawAmt);
+      renderBalance();
+    });
   };
 
   function renderDepositForm(account) {
