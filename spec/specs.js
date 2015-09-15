@@ -5,10 +5,16 @@ describe("Account", function() {
     expect(testAccount.balance).to.equal(100);
   });
 
-  it("adds the withdraw method to all accounts", function() {
+  it("adds a withdraw method to all accounts", function() {
     var testAccount = new Account("Nomen", 200);
     testAccount.withdraw(50);
     expect(testAccount.balance).to.equal(150);
+  });
+
+  it("adds a deposit method to all accounts", function() {
+    var testAccount = new Account("Nomen", 200);
+    testAccount.deposit(100);
+    expect(testAccount.balance).to.equal(300);
   });
 });
 
