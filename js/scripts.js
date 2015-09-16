@@ -1,3 +1,35 @@
+$(document).ready(function() {
+
+  $("#start-game").click(function() {
+    // create game
+    renderStartGame();
+    var game = new Game();
+    // create board
+    game.initialize();
+    // playerz
+
+
+  });
+
+  function renderStartGame() {
+    $("#message-container").empty();
+    $("#message-container").append("<h1 class='text-center'>Welcome to Tic-Tac-Toe!</h1>");
+    $("#controls-container").empty();
+
+  }
+
+  function renderBoard() {
+
+  }
+
+  function renderEndGame() {
+
+  }
+
+
+});
+
+
 function Player(mark) {
   this.mark = mark;
 }
