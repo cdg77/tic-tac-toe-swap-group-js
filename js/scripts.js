@@ -1,32 +1,66 @@
 $(document).ready(function() {
 
-  $("#start-game").click(function() {
-    // create game
-    renderStartGame();
+
+  $("#start").click(function() {
     var game = new Game();
-    // create board
     game.initialize();
-    // playerz
-
-
+    var currentPlayer = game.turn();
+    renderStartGame();
+    renderBoard(game);
+    createEventListeners(game, currentPlayer);
   });
+
+  function checkGame(game) {
+    if (game.checkWinner !== "false") {
+      game.turn();
+    } else {
+      renderEndGame(game.winner);
+    }
+  }
+
+  function renderEndGame = function(player) {
+    $("#message-container").append("<h1 class='text-center'>" + "Player" + player.mark + " wins!</h1>");
+  }
+
 
   function renderStartGame() {
     $("#message-container").empty();
     $("#message-container").append("<h1 class='text-center'>Welcome to Tic-Tac-Toe!</h1>");
     $("#controls-container").empty();
+  }
+
+  function renderBoard(game) {
+
+    $("#board-container").append(
+      "<div class='row text-center'>" +
+        "<div id='0' class='square'></div>" +
+        "<div id='1' class='square'></div>" +
+        "<div id='2' class='square'></div>" +
+      "</div>" +
+      "<div class='row text-center'>" +
+        "<div id='3' class='square'></div>" +
+        "<div id='4' class='square'></div>" +
+        "<div id='5' class='square'></div>" +
+      "</div>" +
+      "<div class='row text-center'>" +
+        "<div id='6' class='square'></div>" +
+        "<div id='7' class='square'></div>" +
+        "<div id='8' class='square'></div>" +
+      "</div>"
+    );
 
   }
 
-  function renderBoard() {
-
+  function createEventListeners(game, currentPlayer) {
+    for (var index = 0; index < 9; index++) {
+      $("#" + index).on("click", function() {
+        board.spaces[index].mark_by(currentPlayer);
+        $(this).text("hi");
+        $(this).unbind();
+        checkGame(game);
+      });
+    }
   }
-
-  function renderEndGame() {
-
-  }
-
-
 });
 
 

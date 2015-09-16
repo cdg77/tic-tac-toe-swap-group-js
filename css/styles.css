@@ -1,0 +1,23 @@
+.square {
+  background-color: #EBEBEB;
+  height: 200px;
+  width: 200px;
+  /*display: inline-block;*/
+  border: 4px solid #551A8B;
+}
+
+.square:hover {
+  background-color: #C2C2C2;
+}
+
+#board-container {
+  margin: 10px auto;
+}
+
+#board-container:hover {
+  cursor: pointer;
+}
+
+.row {
+  margin-bottom: -5px;
+}
