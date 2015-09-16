@@ -1,27 +1,24 @@
 $(document).ready(function() {
 
-
   $("#start").click(function() {
     var game = new Game();
     game.initialize();
     var currentPlayer = game.turn();
     renderStartGame();
-    renderBoard(game);
-    createEventListeners(game, currentPlayer);
+    renderBoard();
   });
 
-  function checkGame(game) {
-    if (game.checkWinner !== "false") {
-      game.turn();
+  function checkGame(game, currentPlayer) {
+    if (game.winner !== false) {
+      currentPlayer = game.turn();
     } else {
-      renderEndGame(game.winner);
+      renderEndGame(currentPlayer);
     }
   }
 
-  function renderEndGame = function(player) {
-    $("#message-container").append("<h1 class='text-center'>" + "Player" + player.mark + " wins!</h1>");
+  function renderEndGame(player) {
+    $("#message-container").append("<h1 class='text-center'>" + "Player " + player.mark + " wins!</h1>");
   }
-
 
   function renderStartGame() {
     $("#message-container").empty();
@@ -29,38 +26,38 @@ $(document).ready(function() {
     $("#controls-container").empty();
   }
 
-  function renderBoard(game) {
-
+  function renderBoard() {
     $("#board-container").append(
       "<div class='row text-center'>" +
-        "<div id='0' class='square'></div>" +
-        "<div id='1' class='square'></div>" +
-        "<div id='2' class='square'></div>" +
+        "<div id='0' class='square' onclick='setSquare()'></div>" +
+        "<div id='1' class='square' onclick='setSquare()'></div>" +
+        "<div id='2' class='square' onclick='setSquare()'></div>" +
       "</div>" +
       "<div class='row text-center'>" +
-        "<div id='3' class='square'></div>" +
-        "<div id='4' class='square'></div>" +
-        "<div id='5' class='square'></div>" +
+        "<div id='3' class='square' onclick='setSquare()'></div>" +
+        "<div id='4' class='square' onclick='setSquare()'></div>" +
+        "<div id='5' class='square' onclick='setSquare()'></div>" +
       "</div>" +
       "<div class='row text-center'>" +
-        "<div id='6' class='square'></div>" +
-        "<div id='7' class='square'></div>" +
-        "<div id='8' class='square'></div>" +
+        "<div id='6' class='square' onclick='setSquare()'></div>" +
+        "<div id='7' class='square' onclick='setSquare()'></div>" +
+        "<div id='8' class='square' onclick='setSquare()'></div>" +
       "</div>"
     );
 
   }
 
-  function createEventListeners(game, currentPlayer) {
-    for (var index = 0; index < 9; index++) {
-      $("#" + index).on("click", function() {
-        board.spaces[index].mark_by(currentPlayer);
-        $(this).text("hi");
-        $(this).unbind();
-        checkGame(game);
-      });
-    }
+  // Problem : this function needs to be defined after renderBoard and currentPlayer
+  // needs to be incremented
+  function setSquare() {
+    alert(currentPlayer);
+    game.board.spaces[ $(this)[0].id ].mark_by(currentPlayer);
+    $(this).text(currentPlayer.mark);
+    $(this).unbind();
+    checkGame(game, currentPlayer);
   }
+
+
 });
 
 
