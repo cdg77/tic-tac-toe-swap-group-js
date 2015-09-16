@@ -1,129 +1,100 @@
-function Account (name, balance) {
-  this.name = name,
-  this.balance = balance,
-  this.transactions = []
+function Player(mark) {
+  this.mark = mark;
+}
+
+function Space(x,y) {
+  this.x = x,
+  this.y = y,
+  this.markedBy = "false";
+}
+
+Space.prototype.mark_by = function(player) {
+  this.markedBy = player;
 };
 
-Account.prototype.withdraw = function (amount) {
-  this.transactions.push("Withdrew - " + amount);
-  return this.balance -= amount;
+function Board() {
+  this.spaces = [];
+}
+
+Board.prototype.initialize = function() {
+  this.spaces = [];
+  for (var x = 0; x < 3; x++) {
+    for (var y = 0; y < 3; y++) {
+      this.spaces.push(new Space(x,y));
+    }
+  }
 };
 
-Account.prototype.deposit = function (amount) {
-  this.transactions.push("Deposited - " + amount);
-  return this.balance += amount;
+Board.prototype.find = function(x,y) {
+  var foundSpace;
+  var count = 0;
+  while (foundSpace === undefined) {
+    if (this.spaces[count].x === x && this.spaces[count].y === y) {
+      if (this.spaces[count].markedBy.mark === undefined) {
+        return "false";
+      } else {
+        return this.spaces[count].markedBy.mark;
+      }
+    }
+    count += 1;
+  }
 };
 
-$(document).ready(function() {
-  $("#create-account-form").submit(function(e) {
-    e.preventDefault();
-    var newName    = $("#name").val();
-    var newBalance = parseFloat( $("#balance").val() );
-    account = new Account(newName, newBalance);
-    renderOptionsMenu(account);
-  });
+function Game() {
+  this.players = [],
+  this.board = [],
+  this.counter = 0,
+  this.winner = false;
+}
 
-  function renderOptionsMenu(account) {
-    $("#form-container").empty();
-    $("#sub-header").text("");
-    $("#form-container").append(
-      "<div id='options-menu' class='row text-center'>" +
-        "<h2>Welcome <b>" + account.name + "</b>!</h2>" +
-        "<h2><small>I would like to...</small></h2>" +
-        "<div class='text-center'>" +
-          "<button class='btn btn-lg btn-default' id='checkBalance'>Check Balance</button>" +
-          "<button class='btn btn-lg btn-success' id='depositForm'>Make a Deposit</button>" +
-          "<button class='btn btn-lg btn-danger' id='withdrawalForm'>Make a Withdrawal</button>" +
-          "<button class='btn btn-lg btn-info' id='renderAccountHistoryForm'>View transaction history" +
-        "</div>" +
-      "</div>"
-    )
-    renderBackButton();
-    $("#checkBalance").click(function() { renderBalance(account); });
-    $("#depositForm").click(function() { renderDepositForm(account); });
-    $("#withdrawalForm").click(function() { renderWithdrawalForm(account); });
-    $("#renderAccountHistoryForm").click(function(){ renderAccountHistoryForm(account); });
-  };
+Game.prototype.turn = function() {
+  this.counter ++;
+  if (this.counter % 2 !== 0) {
+    return this.players[0];
+  } else {
+    return this.players[1];
+  }
+};
 
-  function renderBalance() {
-    $("#form-container").empty();
-    $("#form-container").append(
-      "<div id='options-menu' class='row text-center'>" +
-        "<h2>" + account.name + "</h2>" +
-        "<h3>Balance: $" + account.balance + "</h3>" +
-      "</div>"
-    )
-    renderBackButton();
-  };
+Game.prototype.checkWinner = function() {
+  if ((this.board.spaces[0].markedBy.mark) === (this.board.spaces[1].markedBy.mark) &&
+      (this.board.spaces[0].markedBy.mark) === (this.board.spaces[2].markedBy.mark)) {
+    this.winner = this.board.spaces[0].markedBy;
+  }
+  if ((this.board.spaces[3].markedBy.mark) === (this.board.spaces[4].markedBy.mark) &&
+      (this.board.spaces[3].markedBy.mark) === (this.board.spaces[5].markedBy.mark)) {
+    this.winner = this.board.spaces[3].markedBy;
+  }
+  if ((this.board.spaces[6].markedBy.mark) === (this.board.spaces[7].markedBy.mark) &&
+      (this.board.spaces[6].markedBy.mark) === (this.board.spaces[8].markedBy.mark)) {
+    this.winner = this.board.spaces[6].markedBy;
+  }
+  if ((this.board.spaces[0].markedBy.mark) === (this.board.spaces[3].markedBy.mark) &&
+    (this.board.spaces[0].markedBy.mark) === (this.board.spaces[6].markedBy.mark)) {
+      this.winner = this.board.spaces[0].markedBy;
+  }
+  if ((this.board.spaces[1].markedBy.mark) === (this.board.spaces[4].markedBy.mark) &&
+    (this.board.spaces[1].markedBy.mark) === (this.board.spaces[7].markedBy.mark)) {
+      this.winner = this.board.spaces[1].markedBy;
+  }
+  if ((this.board.spaces[2].markedBy.mark) === (this.board.spaces[5].markedBy.mark) &&
+      (this.board.spaces[2].markedBy.mark) === (this.board.spaces[8].markedBy.mark)) {
+        this.winner = this.board.spaces[2].markedBy;
+  }
+  if ((this.board.spaces[1].markedBy.mark) === (this.board.spaces[4].markedBy.mark) &&
+    (this.board.spaces[1].markedBy.mark) === (this.board.spaces[8].markedBy.mark)) {
+      this.winner = this.board.spaces[1].markedBy;
+  }
+  if ((this.board.spaces[6].markedBy.mark) === (this.board.spaces[4].markedBy.mark) &&
+    (this.board.spaces[6].markedBy.mark) === (this.board.spaces[2].markedBy.mark)) {
+      this.winner = this.board.spaces[6].markedBy;
+  }
+};
 
-  function createEventListener() {
-    $(document).find("#back").click(function() {
-      renderOptionsMenu(account);
-    });
-  };
 
-  function renderBackButton() {
-    $("#form-container").append(
-      "<hr>" +
-      "<div class='row text-center'>" +
-        "<button id='back' class='btn btn-primary btn-lg'>Back</button>" +
-      "</div>"
-    )
-    createEventListener();
-  };
-
-  function renderWithdrawalForm() {
-    $("#form-container").empty();
-    $("#form-container").append(
-      "<form id='withdrawal-form' class='well'>" +
-        "<div class='form-group'>" +
-          "<label for='withdrawal-amount'>Amt to withdraw</label>" +
-          "<input type='text' class='form-control' id='withdrawal-amount'>" +
-        "</div>" +
-        "<div class='row text-center'>" +
-          "<button type='submit' class='btn btn-primary btn-lg'>Withdrawal</button>" +
-        "</div>" +
-      "</form>"
-    )
-    renderBackButton();
-    $("#withdrawal-form").submit(function(e) {
-      e.preventDefault();
-      var withdrawAmt = parseInt( $("#withdrawal-amount").val() );
-      account.withdraw(withdrawAmt);
-      renderBalance();
-    });
-  };
-
-  function renderDepositForm(account) {
-    $("#form-container").empty();
-    $("#form-container").append(
-      "<form id='deposit-form' class='well'>" +
-        "<div class='form-group'>" +
-          "<label for='deposit-amount'>Deposit Amt</label>" +
-          "<input type='text' class='form-control' id='deposit-amount'>" +
-        "</div>" +
-        "<div class='row text-center'>" +
-          "<button type='submit' class='btn btn-primary btn-lg'>Deposit</button>" +
-        "</div>" +
-      "</form>"
-    )
-    renderBackButton();
-    $("#deposit-form").submit(function(e) {
-      e.preventDefault();
-      var depositAmt = parseInt( $("#deposit-amount").val() );
-      account.deposit(depositAmt);
-      renderBalance();
-    });
-  };
-
-  function renderAccountHistoryForm(account) {
-    $("#form-container").empty();
-    $("#form-container").append(
-      "<ul class='well' id='transactions-container'></ul>"
-    )
-    account.transactions.forEach(function(transaction) {
-      $("#transactions-container").append("<li class='transaction-list-item'>" + transaction + "</li>");
-    });
-    renderBackButton();
-  };
-});
+Game.prototype.initialize = function() {
+  this.players.push(new Player("X")),
+  this.players.push(new Player("O")),
+  this.board = new Board();
+  this.board.initialize();
+};
