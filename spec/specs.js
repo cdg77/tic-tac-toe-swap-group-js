@@ -28,18 +28,6 @@ describe("Board", function() {
     expect(board.spaces[4].x).to.eql(1);
     expect(board.spaces[8].y).to.eql(2);
   });
-  it("returns false if a space is not marked", function() {
-    var board = new Board();
-    board.initialize();
-    expect(board.find(1,2)).to.equal("false");
-  });
-  it("returns the player's mark if the space is marked", function() {
-    var board = new Board();
-    var testPlayer = new Player("X");
-    board.initialize();
-    board.spaces[5].mark_by(testPlayer);
-    expect(board.find(1,2)).to.equal("X");
-  });
 });
 
 describe("Game", function() {

@@ -25,21 +25,6 @@ Board.prototype.initialize = function() {
   }
 };
 
-Board.prototype.find = function(x,y) {
-  var foundSpace;
-  var count = 0;
-  while (foundSpace === undefined) {
-    if (this.spaces[count].x === x && this.spaces[count].y === y) {
-      if (this.spaces[count].markedBy.mark === undefined) {
-        return "false";
-      } else {
-        return this.spaces[count].markedBy.mark;
-      }
-    }
-    count += 1;
-  }
-};
-
 function Game() {
   this.players = [],
   this.board = [],
@@ -57,40 +42,40 @@ Game.prototype.turn = function() {
 };
 
 Game.prototype.checkWinner = function() {
-  if ((this.board.spaces[0].markedBy.mark) === (this.board.spaces[1].markedBy.mark) &&
-      (this.board.spaces[0].markedBy.mark) === (this.board.spaces[2].markedBy.mark)) {
-    this.winner = this.board.spaces[0].markedBy;
+  var space = this.board.spaces
+  if ((space[0].markedBy.mark) === (space[1].markedBy.mark) &&
+      (space[0].markedBy.mark) === (space[2].markedBy.mark)) {
+    this.winner = space[0].markedBy;
   }
-  if ((this.board.spaces[3].markedBy.mark) === (this.board.spaces[4].markedBy.mark) &&
-      (this.board.spaces[3].markedBy.mark) === (this.board.spaces[5].markedBy.mark)) {
-    this.winner = this.board.spaces[3].markedBy;
+  if ((space[3].markedBy.mark) === (space[4].markedBy.mark) &&
+      (space[3].markedBy.mark) === (space[5].markedBy.mark)) {
+    this.winner = space[3].markedBy;
   }
-  if ((this.board.spaces[6].markedBy.mark) === (this.board.spaces[7].markedBy.mark) &&
-      (this.board.spaces[6].markedBy.mark) === (this.board.spaces[8].markedBy.mark)) {
-    this.winner = this.board.spaces[6].markedBy;
+  if ((space[6].markedBy.mark) === (space[7].markedBy.mark) &&
+      (space[6].markedBy.mark) === (space[8].markedBy.mark)) {
+    this.winner = space[6].markedBy;
   }
-  if ((this.board.spaces[0].markedBy.mark) === (this.board.spaces[3].markedBy.mark) &&
-    (this.board.spaces[0].markedBy.mark) === (this.board.spaces[6].markedBy.mark)) {
-      this.winner = this.board.spaces[0].markedBy;
+  if ((space[0].markedBy.mark) === (space[3].markedBy.mark) &&
+      (space[0].markedBy.mark) === (space[6].markedBy.mark)) {
+    this.winner = space[0].markedBy;
   }
-  if ((this.board.spaces[1].markedBy.mark) === (this.board.spaces[4].markedBy.mark) &&
-    (this.board.spaces[1].markedBy.mark) === (this.board.spaces[7].markedBy.mark)) {
-      this.winner = this.board.spaces[1].markedBy;
+  if ((space[1].markedBy.mark) === (space[4].markedBy.mark) &&
+      (space[1].markedBy.mark) === (space[7].markedBy.mark)) {
+    this.winner = space[1].markedBy;
   }
-  if ((this.board.spaces[2].markedBy.mark) === (this.board.spaces[5].markedBy.mark) &&
-      (this.board.spaces[2].markedBy.mark) === (this.board.spaces[8].markedBy.mark)) {
-        this.winner = this.board.spaces[2].markedBy;
+  if ((space[2].markedBy.mark) === (space[5].markedBy.mark) &&
+      (space[2].markedBy.mark) === (space[8].markedBy.mark)) {
+    this.winner = space[2].markedBy;
   }
-  if ((this.board.spaces[1].markedBy.mark) === (this.board.spaces[4].markedBy.mark) &&
-    (this.board.spaces[1].markedBy.mark) === (this.board.spaces[8].markedBy.mark)) {
-      this.winner = this.board.spaces[1].markedBy;
+  if ((space[1].markedBy.mark) === (space[4].markedBy.mark) &&
+      (space[1].markedBy.mark) === (space[8].markedBy.mark)) {
+    this.winner = space[1].markedBy;
   }
-  if ((this.board.spaces[6].markedBy.mark) === (this.board.spaces[4].markedBy.mark) &&
-    (this.board.spaces[6].markedBy.mark) === (this.board.spaces[2].markedBy.mark)) {
-      this.winner = this.board.spaces[6].markedBy;
+  if ((space[6].markedBy.mark) === (space[4].markedBy.mark) &&
+      (space[6].markedBy.mark) === (space[2].markedBy.mark)) {
+    this.winner = space[6].markedBy;
   }
 };
-
 
 Game.prototype.initialize = function() {
   this.players.push(new Player("X")),
