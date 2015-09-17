@@ -1,7 +1,7 @@
 $(document).ready(function() {
-
-  $("#start").on("click", function() { 
-    startGame(); 
+  event.preventDefault();
+  $("#start").on("click", function() {
+    startGame();
     $(this).off("click");
   });
 
@@ -12,20 +12,21 @@ $(document).ready(function() {
   function startGame() {
     game = new Game();
     game.initialize();
-    currentPlayer = game.turn();
-    printPlayer();
     renderStartGameMsg();
     renderBoard();
+    currentPlayer = game.turn();
+    printPlayer();
   }
 
   function checkGame() {
+    // debugger
     game.checkWinner();
-    if (game.counter === 9) { renderTieGameMsg(); }
     if (game.winner !== "false") {
       renderWinGameMsg(game.winner);
-    } else {
+    } else if (game.counter === 9) { renderTieGameMsg(); }
+     else {
       currentPlayer = game.turn();
-      // Working on adding dynamic picture classes to hovering based upon turn 
+      // Working on adding dynamic picture classes to hovering based upon turn
       if ($("#board-container").hasClass("x") ) {
         $("#board-container").removeClass("x");
         $("#board-container").addClass("y");
@@ -39,10 +40,10 @@ $(document).ready(function() {
 
   function renderEndGameComponents() {
     $("#board-container").empty();
-    $("#turn-container").empty();
+    $("#turn-container").hide();
     $("#message-container").append("<button id='restart' class='btn text-center btn-primary btn-lg'>Play again?</button>");
-    $("#restart").on("click", function() { 
-      startGame(); 
+    $("#restart").on("click", function() {
+      startGame();
       $(this).off("click");
     });
   }
@@ -61,6 +62,7 @@ $(document).ready(function() {
   function renderStartGameMsg() {
     $("#message-container").empty();
     $("#message-container").append("<h1 class='text-center'>Welcome to Tic-Tac-Toe!</h1>");
+    $("#turn-container").show();
     $("#controls-container").remove();
   }
 
@@ -79,6 +81,7 @@ $(document).ready(function() {
   });
 
   function renderBoard() {
+
     $("#board-container").empty();
     $("#board-container").append(
       "<table id='board'>" +
@@ -146,7 +149,7 @@ Game.prototype.turn = function() {
   }
 };
 
-// Needs a LOT of refactoring 
+// Needs a LOT of refactoring
 Game.prototype.checkWinner = function() {
   var space = this.board.spaces
   if ((space[0].markedBy.mark) === (space[1].markedBy.mark) &&
@@ -173,13 +176,13 @@ Game.prototype.checkWinner = function() {
       (space[2].markedBy.mark) === (space[8].markedBy.mark)) {
     this.winner = space[2].markedBy;
   }
-  if ((space[1].markedBy.mark) === (space[4].markedBy.mark) &&
-      (space[1].markedBy.mark) === (space[8].markedBy.mark)) {
-    this.winner = space[1].markedBy;
+  if ((space[2].markedBy.mark) === (space[4].markedBy.mark) &&
+      (space[2].markedBy.mark) === (space[6].markedBy.mark)) {
+    this.winner = space[2].markedBy;
   }
-  if ((space[6].markedBy.mark) === (space[4].markedBy.mark) &&
-      (space[6].markedBy.mark) === (space[2].markedBy.mark)) {
-    this.winner = space[6].markedBy;
+  if ((space[0].markedBy.mark) === (space[4].markedBy.mark) &&
+      (space[0].markedBy.mark) === (space[8].markedBy.mark)) {
+    this.winner = space[0].markedBy;
   }
 };
 
