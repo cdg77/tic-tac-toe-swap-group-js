@@ -14,14 +14,15 @@
     <div id="instructions-container" class="row text-right">
       <button class="btn btn-default" data-toggle="modal" data-target="#instructions-modal">View Instructions</button>
     </div>
-    <div id="message-container" class="row">
-
+    <div id="message-container" class="row text-center"></div>
+    <div id="turn-container" class="row">
+      <h2 id="player-turn"></h2>
     </div>
-    <div id="controls-container" class="row text-center">
+    <div id="controls-container" class="row jumbotron text-center">
+      <h1>Tic Tac Toe</h1> 
       <button id="start" class="btn btn-primary btn-lg">Start a Game</button>
     </div>
-    <div id="board-container" class="container">
-    </div>
+    <div id="board-container" class="container"></div>
   </div>
 
   <!-- Modal -->
@@ -40,9 +41,7 @@
              are filled. X always goes first, and in the event that no one has
              three in a row, the stalemate is called a cat game.
           </p>
-          <p>
-            Click <b>Start a Game</b> to begin playing!
-          </p>
+          <p> Click <b>Start a Game</b> to begin playing!</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
