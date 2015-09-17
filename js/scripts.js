@@ -1,65 +1,107 @@
 $(document).ready(function() {
 
-  $("#start").click(function() {
-    var game = new Game();
-    game.initialize();
-    var currentPlayer = game.turn();
-    renderStartGame();
-    renderBoard();
+  $("#start").on("click", function() { 
+    startGame(); 
+    $(this).off("click");
   });
 
-  function checkGame(game, currentPlayer) {
-    if (game.winner !== false) {
-      currentPlayer = game.turn();
-    } else {
-      renderEndGame(currentPlayer);
-    }
+  function printPlayer() {
+    $("#player-turn").text(currentPlayer.mark + "'s turn!");
   }
 
-  function renderEndGame(player) {
+  function startGame() {
+    game = new Game();
+    game.initialize();
+    currentPlayer = game.turn();
+    printPlayer();
+    renderStartGameMsg();
+    renderBoard();
+  }
+
+  function checkGame() {
+    game.checkWinner();
+    if (game.counter === 9) { renderTieGameMsg(); }
+    if (game.winner !== "false") {
+      renderWinGameMsg(game.winner);
+    } else {
+      currentPlayer = game.turn();
+      // Working on adding dynamic picture classes to hovering based upon turn 
+      if ($("#board-container").hasClass("x") ) {
+        $("#board-container").removeClass("x");
+        $("#board-container").addClass("y");
+      } else {
+        $("#board-container").removeClass("y");
+        $("#board-container").addClass("x");
+      }
+    }
+    printPlayer();
+  }
+
+  function renderEndGameComponents() {
+    $("#board-container").empty();
+    $("#turn-container").empty();
+    $("#message-container").append("<button id='restart' class='btn text-center btn-primary btn-lg'>Play again?</button>");
+    $("#restart").on("click", function() { 
+      startGame(); 
+      $(this).off("click");
+    });
+  }
+
+
+  function renderTieGameMsg() {
+    renderEndGameComponents();
+    $("#message-container").append("<h1 class='text-center'>" + "It's a Tie!</h1>");
+  }
+
+  function renderWinGameMsg(player) {
+    renderEndGameComponents();
     $("#message-container").append("<h1 class='text-center'>" + "Player " + player.mark + " wins!</h1>");
   }
 
-  function renderStartGame() {
+  function renderStartGameMsg() {
     $("#message-container").empty();
     $("#message-container").append("<h1 class='text-center'>Welcome to Tic-Tac-Toe!</h1>");
-    $("#controls-container").empty();
+    $("#controls-container").remove();
   }
+
+  $("#board-container").on("click", ".square", function() {
+    game.board.spaces[ $(this)[0].id ].mark_by(currentPlayer);
+    if ( $(this).text() !== '') {
+      alert("Cheater!");
+    } else {
+      if (currentPlayer.mark === 'X') {
+        $(this).text("X").css("background-color", "red").addClass("mark");
+      } else {
+        $(this).text("O").css("background-color", "green").addClass("mark");
+      }
+      checkGame();
+    }
+  });
 
   function renderBoard() {
+    $("#board-container").empty();
     $("#board-container").append(
-      "<div class='row text-center'>" +
-        "<div id='0' class='square' onclick='setSquare()'></div>" +
-        "<div id='1' class='square' onclick='setSquare()'></div>" +
-        "<div id='2' class='square' onclick='setSquare()'></div>" +
-      "</div>" +
-      "<div class='row text-center'>" +
-        "<div id='3' class='square' onclick='setSquare()'></div>" +
-        "<div id='4' class='square' onclick='setSquare()'></div>" +
-        "<div id='5' class='square' onclick='setSquare()'></div>" +
-      "</div>" +
-      "<div class='row text-center'>" +
-        "<div id='6' class='square' onclick='setSquare()'></div>" +
-        "<div id='7' class='square' onclick='setSquare()'></div>" +
-        "<div id='8' class='square' onclick='setSquare()'></div>" +
-      "</div>"
+      "<table id='board'>" +
+        "<tr>" +
+          "<td id='0' class='square'></td>" +
+          "<td id='1' class='square'></td>" +
+          "<td id='2' class='square'></td>" +
+        "</tr>" +
+        "<tr>" +
+          "<td id='3' class='square'></td>" +
+          "<td id='4' class='square'></td>" +
+          "<td id='5' class='square'></td>" +
+        "</tr>" +
+        "<tr>" +
+          "<td id='6' class='square'></td>" +
+          "<td id='7' class='square'></td>" +
+          "<td id='8' class='square'></td>" +
+        "</tr>" +
+      "</table>"
     );
-
   }
-
-  // Problem : this function needs to be defined after renderBoard and currentPlayer
-  // needs to be incremented
-  function setSquare() {
-    alert(currentPlayer);
-    game.board.spaces[ $(this)[0].id ].mark_by(currentPlayer);
-    $(this).text(currentPlayer.mark);
-    $(this).unbind();
-    checkGame(game, currentPlayer);
-  }
-
 
 });
-
 
 function Player(mark) {
   this.mark = mark;
@@ -104,6 +146,7 @@ Game.prototype.turn = function() {
   }
 };
 
+// Needs a LOT of refactoring 
 Game.prototype.checkWinner = function() {
   var space = this.board.spaces
   if ((space[0].markedBy.mark) === (space[1].markedBy.mark) &&
