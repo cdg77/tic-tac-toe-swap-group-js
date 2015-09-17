@@ -66,18 +66,40 @@ $(document).ready(function() {
     $("#controls-container").remove();
   }
 
+  //two player
+  // $("#board-container").on("click", ".square", function() {
+  //   game.board.spaces[ $(this)[0].id ].mark_by(currentPlayer);
+  //   if ( $(this).text() !== '') {
+  //     alert("Cheater!");
+  //   } else {
+  //     if (currentPlayer.mark === 'X') {
+  //       $(this).text("X").css("background-color", "red").addClass("mark");
+  //     } else {
+  //       $(this).text("O").css("background-color", "green").addClass("mark");
+  //     }
+  //     checkGame();
+  //   }
+  // });
+
+
+  //one player vs computer
   $("#board-container").on("click", ".square", function() {
-    game.board.spaces[ $(this)[0].id ].mark_by(currentPlayer);
+
     if ( $(this).text() !== '') {
       alert("Cheater!");
     } else {
-      if (currentPlayer.mark === 'X') {
+        game.board.spaces[ $(this)[0].id ].mark_by(game.players[0]);
         $(this).text("X").css("background-color", "red").addClass("mark");
-      } else {
-        $(this).text("O").css("background-color", "green").addClass("mark");
+        console.log("Computer Turn")
+
+        var computerMove = game.computerPlayer();
+        console.log(computerMove);
+
+        game.board.spaces[computerMove].mark_by(game.players[1]);
+        $('#' + computerMove).text("O").css("background-color", "green").addClass("mark");
+        checkGame();
+
       }
-      checkGame();
-    }
   });
 
   function renderBoard() {
@@ -139,6 +161,27 @@ function Game() {
   this.counter = 0,
   this.winner = false;
 }
+
+// One player and two player setting
+
+// one player
+// computer as the other player: it will play randomly on the board
+Game.prototype.computerPlayer = function() {
+  var randomMove = Math.floor(Math.random()*9);
+  var spaces = game.board.spaces;
+
+  for(var i = 0; i < 9; i++) {
+    console.log("trying this space" + randomMove);
+
+    if(spaces[randomMove].markedBy === "false")
+      return randomMove;
+    else
+      console.log("Taken");
+      randomMove = Math.floor(Math.random()*9);
+  }
+  return randomMove;
+};
+
 
 Game.prototype.turn = function() {
   this.counter ++;
